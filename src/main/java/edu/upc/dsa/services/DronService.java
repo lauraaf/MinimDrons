@@ -54,7 +54,7 @@ public class DronService {
     @GET
     @ApiOperation(value = "get Flight plans from a pilot", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Dron.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = Pilot.class, responseContainer="List"),
     })
     @Path("/get Flight Plans")
     @Produces(MediaType.APPLICATION_JSON)
@@ -66,6 +66,23 @@ public class DronService {
         return Response.status(201).entity(entity).build()  ;
 
     }
+
+    /*@GET
+    @ApiOperation(value = "get Flight plans from a dron", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = Dron.class, responseContainer="List"),
+    })
+    @Path("/get Flight Plans")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFlightPlansD(Dron dron) {
+
+        List<FlightPlan> fp = this.dm.dronFlightPlans(dron);
+
+        GenericEntity<List<FlightPlan>> entity = new GenericEntity<List<FlightPlan>>(fp) {};
+        return Response.status(201).entity(entity).build()  ;
+
+    }
+
 
 
     /*@POST
