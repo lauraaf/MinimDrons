@@ -17,4 +17,6 @@ PART 1
 PART 2
 - He afegit les funcions de AddPilot, RepairDron i StoreDron a la API Rest, però em surt error 415 (Media type Not supported)
 
+---------------Versió 3 Minim Drons, 14 Abril---------------
+Ja funcionen les funcions de test
 

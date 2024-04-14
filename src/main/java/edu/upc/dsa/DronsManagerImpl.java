@@ -160,6 +160,8 @@ public class DronsManagerImpl implements DronManager{
         return this.listflightPlan.size();
     }
 
+
+
     @Override
     public void bookFlightPlan(String idDron, double fecha, double duration, double initialPos, double destPos, String idPilot) {
         FlightPlan fp = new FlightPlan(idDron, fecha, initialPos, destPos, idPilot, duration);
