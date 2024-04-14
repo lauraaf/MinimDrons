@@ -4,6 +4,7 @@ package edu.upc.dsa.services;
 
 import edu.upc.dsa.DronManager;
 import edu.upc.dsa.DronsManagerImpl;
+import edu.upc.dsa.exceptions.DronYaExiste;
 import edu.upc.dsa.models.Dron;
 import edu.upc.dsa.models.FlightPlan;
 import edu.upc.dsa.models.Pilot;
@@ -24,10 +25,11 @@ public class DronService {
 
     private DronManager dm;
 
-    public DronService() {
+    public DronService() throws DronYaExiste {
         this.dm = DronsManagerImpl.getInstance();
         if (dm.size()==0) {
             this.dm.addDron("1", "Air98","Vueling","X405");
+            this.dm.addPilot("1","Laura", "Fernandez");
 
         }
 
@@ -43,13 +45,28 @@ public class DronService {
 
     @Path("/Add Dron")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addDron(Dron dron){
+    public Response addDron(Dron dron) throws DronYaExiste {
 
         if (dron.getIdDron()==null || dron.getName()==null || dron.getFabricant()==null)  return Response.status(500).entity(dron).build();
-        this.dm.addDron(dron.getIdDron(), dron.getModel(), dron.getFabricant(), dron.getFabricant());
+        this.dm.addDron(dron.getIdDron(), dron.getModel(), dron.getName(), dron.getFabricant());
         return Response.status(201).entity(dron).build();
     }
 
+    @POST
+    @ApiOperation(value = "Add a new pilot", notes = "Add new pilot")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response= Pilot.class),
+            @ApiResponse(code = 500, message = "Validation Error")
+
+    })
+    @Path("/Add Pilot")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addPilot(Pilot pilot) {
+
+        if (pilot.getId()==null || pilot.getName()==null || pilot.getSurname()==null)  return Response.status(500).entity(pilot).build();
+        this.dm.addPilot(pilot.getId(), pilot.getName(), pilot.getSurname());
+        return Response.status(201).entity(pilot).build();
+    }
 
     @GET
     @ApiOperation(value = "get Flight plans from a pilot", notes = "asdasd")
@@ -66,6 +83,33 @@ public class DronService {
         return Response.status(201).entity(entity).build()  ;
 
     }
+    @DELETE
+    @ApiOperation(value = "Repair a Dron", notes = "delete a dron from warehouse")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful"),
+            @ApiResponse(code = 404, message = "Track not found")
+    })
+    @Path("/")
+    public Response RepararDron() {
+        dm.repararDron();
+        return Response.status(201).build();
+    }
+    @POST
+    @ApiOperation(value = "Add a dron in the warehouse", notes = "Add dron warehpuse")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response= Dron.class),
+            @ApiResponse(code = 500, message = "Validation Error")
+
+    })
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response storeDron(Dron dron) {
+
+        if (dron.getIdDron()==null || dron.getName()==null || dron.getFabricant()==null)  return Response.status(500).entity(dron).build();
+        this.dm.storeDron(dron);
+        return Response.status(201).entity(dron).build();
+    }
+
 
     /*@GET
     @ApiOperation(value = "get Flight plans from a dron", notes = "asdasd")

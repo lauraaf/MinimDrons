@@ -1,5 +1,6 @@
 package edu.upc.dsa;
 
+import edu.upc.dsa.exceptions.DronYaExiste;
 import edu.upc.dsa.models.Dron;
 import edu.upc.dsa.models.FlightPlan;
 import edu.upc.dsa.models.Pilot;
@@ -11,7 +12,7 @@ public interface DronManager {
     public List<Pilot> pilotesbyFlownHours();
     public List<FlightPlan> pilotFlightPlans(Pilot pilot);
     public List<FlightPlan> dronFlightPlans(Dron dron);
-    public void addDron(String idDron, String name, String fabricant, String model);
+    public void addDron(String idDron, String name, String fabricant, String model) throws DronYaExiste;
     public void addPilot(String idPilot, String name, String surname);
     public void storeDron(Dron dron);
     //public void repairDron(Dron dron);

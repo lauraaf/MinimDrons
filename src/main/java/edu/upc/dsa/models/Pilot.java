@@ -15,7 +15,7 @@ public class Pilot {
         this.id = id;
         this.setName(name);
         this.setSurname(surname);
-
+        this.setFlownHours(flownHours);
     }
 
     public String getId() {

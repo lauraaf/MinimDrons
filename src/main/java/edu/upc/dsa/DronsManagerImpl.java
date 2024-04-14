@@ -1,5 +1,6 @@
 package edu.upc.dsa;
 
+import edu.upc.dsa.exceptions.DronYaExiste;
 import edu.upc.dsa.models.Dron;
 import edu.upc.dsa.models.FlightPlan;
 import edu.upc.dsa.models.Pilot;
@@ -40,14 +41,14 @@ public class DronsManagerImpl implements DronManager{
     @Override
     public List<Dron> dronesbyFlownHours() {
         List<Dron> list = listdrons;
-        //list.sort((p1,p2)-> Double.compare(p1.getFlownHours(), p2.getFlownHours()));
+        list.sort((p1,p2)-> Double.compare(p1.getFlownHours(), p2.getFlownHours()));
         return list;
     }
 
     @Override
     public List<Pilot> pilotesbyFlownHours() {
         List<Pilot> list = listpilots;
-        //list.sort((p1,p2)-> Double.compare(p1.getFlownHours(), p2.getFlownHours()));
+        list.sort((p1,p2)-> Double.compare(p1.getFlownHours(), p2.getFlownHours()));
         return list;
     }
 
@@ -62,7 +63,6 @@ public class DronsManagerImpl implements DronManager{
             if(fp.getIdPiloto().equals(id)){
                 list.add(fp);
             }
-
         }
         return list;
     }
@@ -78,17 +78,17 @@ public class DronsManagerImpl implements DronManager{
             if(fp.getIdDron().equals(id)){
                 list.add(fp);
             }
-
         }
         return list;
     }
 
 
     @Override
-    public void addDron(String idDron, String name, String fabricant, String model) {
+    public void addDron(String idDron, String name, String fabricant, String model) throws DronYaExiste {
         logger.info("Comprovem que aquest dron no existeix");
         if(listdrons.contains(idDron)){
             logger.error("Aquest Dron ja existeix");
+            throw new DronYaExiste();
         }
         Dron dron = new Dron(idDron, name, fabricant, model);
         listdrons.add(dron);
@@ -111,8 +111,15 @@ public class DronsManagerImpl implements DronManager{
         logger.info("comprovem que el dron existeix");
         String idDron = dron.getIdDron();
         if(listdrons.contains(idDron)){
-           almacen.addLast(dron);
-           logger.info("El dron es troba dins el almacen");
+            if(almacen.contains(dron)){
+                logger.info("El dron ja esta dins al magatzem");
+            }
+            else{
+                almacen.addLast(dron);
+                //Entra el drona al magatzem amb la variable repair=true
+                dron.setRepair(true);
+                logger.info("El dron s'ha guardat al magatzem");
+            }
         }
         else{
             logger.error("El dron amd id: "+idDron+", ja existeix");
@@ -133,7 +140,7 @@ public class DronsManagerImpl implements DronManager{
     public void repararDron() {
         //Agafem el primer dron que esta al almacen
         Dron dron = almacen.getFirst();
-        dron.setRepair(1);
+        dron.setRepair(false);
         almacen.remove(dron);
         logger.info("El Dron ha sigut reparat, i es troba fora del almacen");
     }

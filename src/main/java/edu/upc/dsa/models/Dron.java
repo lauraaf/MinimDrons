@@ -6,7 +6,9 @@ public class Dron {
     private String fabricant;
     private String model;
     private double flownHours;
-    private int repair = 0;
+
+    //Declarem la variable repair = false si no necessita reparació o ja ha sigut reparat
+    private boolean repair = false;
 
     public Dron(String idDron, String name,String fabricant, String model){
         this.idDron = idDron;
@@ -57,11 +59,11 @@ public class Dron {
         this.flownHours = flownHours;
     }
 
-    public int getRepair() {
+    public boolean isRepair() {
         return repair;
     }
 
-    public void setRepair(int repair) {
+    public void setRepair(boolean repair) {
         this.repair = repair;
     }
 }
